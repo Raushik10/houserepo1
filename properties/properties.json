@@ -8,7 +8,7 @@
         "/images/uploads/images.jpg",
         "/images/uploads/modern-house-interior-exterior-design-46517595.webp"
       ],
-      "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27993.324327310802!2d77.1191811!3d28.7145984!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d011336714cc1%3A0x6087ef6e30bd9cc8!2sESIC%20Dental%20College%20and%20Hospital!5e0!3m2!1sen!2sin!4v1776076677961!5m2!1sen!2sin\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+      "map": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27993.324327310802!2d77.1191811!3d28.7145984!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d011336714cc1%3A0x6087ef6e30bd9cc8!2sESIC%20Dental%20College%20and%20Hospital!5e0!3m2!1sen!2sin!4v1776076677961!5m2!1sen!2sin\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\""
     }
   ]
 }
