@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Luxury Rental Apartments</title>
+<title>Dream Living Rentals</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -21,20 +21,18 @@ nav a { color:#fff; margin:0 10px; text-decoration:none; }
 
 .btn { background:#ff5a5f; color:white; padding:10px 20px; border:none; cursor:pointer; }
 
-.container { padding:40px 20px; }
+.container { padding:50px 20px; }
 
-.cards {
-  display:flex; gap:20px; flex-wrap:wrap; justify-content:center;
-}
+.cards { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; }
 
 .card {
   width:300px; border-radius:10px; overflow:hidden;
   box-shadow:0 4px 10px rgba(0,0,0,0.2);
-  cursor:pointer;
+  cursor:pointer; transition:0.3s;
 }
+.card:hover { transform:scale(1.05); }
 
 .card img { width:100%; height:200px; object-fit:cover; }
-
 .card-content { padding:15px; }
 
 .gallery img {
@@ -55,17 +53,23 @@ footer { background:#111; color:white; text-align:center; padding:20px; }
   padding:15px; border-radius:50%;
   text-decoration:none;
 }
+
+/* HIDE property details initially */
+#propertyDetail {
+  display:none;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<h2>Luxury Rentals</h2>
+<h2>Dream Living Rentals</h2>
 <nav>
 <a href="#home">Home</a>
 <a href="#properties">Properties</a>
 <a href="#contact">Contact</a>
+<a href="#about">About</a>
 </nav>
 </header>
 
@@ -75,18 +79,16 @@ footer { background:#111; color:white; text-align:center; padding:20px; }
 <button class="btn" onclick="document.getElementById('properties').scrollIntoView()">Explore</button>
 </section>
 
+<!-- PROPERTIES -->
 <section class="container" id="properties">
 <h2 style="text-align:center">Our Properties</h2>
-
 <div class="cards" id="propertiesContainer"></div>
-
 </section>
 
+<!-- PROPERTY DETAIL (HIDDEN INITIALLY) -->
 <section class="container" id="propertyDetail">
 <h2 id="title"></h2>
-
 <div class="gallery" id="gallery"></div>
-
 <p id="desc"></p>
 <p><b id="price"></b></p>
 
@@ -109,16 +111,9 @@ footer { background:#111; color:white; text-align:center; padding:20px; }
 <button class="btn">Book Now</button>
 </form>
 
-<h3>Location</h3>
-<iframe src="https://maps.google.com/maps?q=delhi&t=&z=13&ie=UTF8&iwloc=&output=embed"
-width="100%" height="300"></iframe>
-
-<h3>Reviews</h3>
-<p>⭐️⭐️⭐️⭐️⭐️ Excellent stay!</p>
-<p>⭐️⭐️⭐️⭐️ Very comfortable</p>
-
 </section>
 
+<!-- CONTACT -->
 <section class="container" id="contact">
 <h2>Contact Us</h2>
 
@@ -131,17 +126,24 @@ width="100%" height="300"></iframe>
 
 <button class="btn">Send</button>
 </form>
+</section>
 
+<!-- ABOUT (NOW BELOW CONTACT) -->
+<section class="container" id="about">
+<h2 style="text-align:center">About Us</h2>
+<p style="max-width:800px; margin:auto; text-align:center;">
+At Dream Living Rentals, we provide premium apartments for short and long stays with modern amenities, prime locations, and affordable pricing.
+</p>
 </section>
 
 <footer>
-<p>© 2026 Luxury Rentals</p>
+<p>© 2026 Dream Living Rentals</p>
 </footer>
 
 <a class="whatsapp" href="https://wa.me/91XXXXXXXXXX">💬</a>
 
 <script>
-// Load properties dynamically from CMS JSON
+// Load properties
 fetch('/properties/properties.json')
   .then(res => res.json())
   .then(data => {
@@ -170,15 +172,16 @@ fetch('/properties/properties.json')
     });
   });
 
-// Show selected property
+// Show property + reveal booking section
 function showProperty(title, price, desc, img){
  document.getElementById('title').innerText = title;
  document.getElementById('desc').innerText = desc;
  document.getElementById('price').innerText = price;
 
- document.getElementById('gallery').innerHTML = `
-   <img src="${img}">
- `;
+ document.getElementById('gallery').innerHTML = `<img src="${img}">`;
+
+ // 🔥 SHOW SECTION
+ document.getElementById('propertyDetail').style.display = "block";
 
  document.getElementById('propertyDetail').scrollIntoView();
 }
