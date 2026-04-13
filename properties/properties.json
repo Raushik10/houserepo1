@@ -1,28 +1,3 @@
 {
-  "items": [
-    {
-      "title": "Dream living",
-      "price": "$123",
-      "description": "welcome to our best house",
-      "image": "/images/uploads/modern-house-interior-exterior-design-46517595.webp"
-    },
-    {
-      "title": "Beautifull house",
-      "price": "$111",
-      "description": "welcome to our beutifil home",
-      "image": "/images/uploads/images.jpg"
-    },
-    {
-      "title": "hello ",
-      "price": "1111",
-      "description": "javhpifvpoaj",
-      "image": "/images/uploads/modern-house-interior-exterior-design-46517595.webp"
-    },
-    {
-      "title": "hawlkh",
-      "price": "wjfnkl",
-      "description": "jnaf;kj",
-      "image": "/images/uploads/modern-house-interior-exterior-design-46517595.webp"
-    }
-  ]
+  "items": []
 }
