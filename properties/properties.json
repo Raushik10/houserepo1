@@ -1,3 +1,10 @@
 {
-  "items": []
+  "items": [
+    {
+      "title": "Hello world",
+      "price": "123",
+      "description": "aboflhbrvoiahbfiocvwahrbvoiakhbvc",
+      "image": "/images/uploads/modern-house-interior-exterior-design-46517595.webp"
+    }
+  ]
 }
