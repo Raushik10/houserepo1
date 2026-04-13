@@ -1,6 +1,6 @@
 backend:
   name: git-gateway
-  branch: master
+  branch: master   # or main (your branch)
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
@@ -8,11 +8,16 @@ public_folder: "/images/uploads"
 collections:
   - name: "properties"
     label: "Properties"
-    folder: "properties"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Price", name: "price", widget: "string" }
-      - { label: "Description", name: "description", widget: "text" }
-      - { label: "Image", name: "image", widget: "image" }
+    files:
+      - label: "Properties Data"
+        name: "properties"
+        file: "properties/properties.json"
+        fields:
+          - label: "Properties"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Price", name: "price", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Image", name: "image", widget: "image" }
