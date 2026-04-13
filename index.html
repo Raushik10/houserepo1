@@ -26,8 +26,8 @@ nav a { color:#fff; margin:0 10px; text-decoration:none; }
 .cards { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; }
 
 .card {
-  width:300px; border-radius:10px; overflow:hidden;
-  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  width:300px; border-radius:12px; overflow:hidden;
+  box-shadow:0 6px 15px rgba(0,0,0,0.2);
   cursor:pointer; transition:0.3s;
 }
 .card:hover { transform:scale(1.05); }
@@ -35,10 +35,17 @@ nav a { color:#fff; margin:0 10px; text-decoration:none; }
 .card img { width:100%; height:200px; object-fit:cover; }
 .card-content { padding:15px; }
 
-.gallery img {
-  width:100%; max-width:600px; margin:10px auto;
-  display:block; border-radius:10px;
+.gallery {
+  display:flex;
+  overflow-x:auto;
+  gap:10px;
 }
+.gallery img {
+  height:250px;
+  border-radius:10px;
+}
+
+#propertyDetail { display:none; }
 
 input, textarea, select {
   width:100%; padding:10px; margin:10px 0;
@@ -51,12 +58,6 @@ footer { background:#111; color:white; text-align:center; padding:20px; }
   position:fixed; bottom:20px; right:20px;
   background:#25D366; color:white;
   padding:15px; border-radius:50%;
-  text-decoration:none;
-}
-
-/* HIDE property details initially */
-#propertyDetail {
-  display:none;
 }
 </style>
 </head>
@@ -79,18 +80,21 @@ footer { background:#111; color:white; text-align:center; padding:20px; }
 <button class="btn" onclick="document.getElementById('properties').scrollIntoView()">Explore</button>
 </section>
 
-<!-- PROPERTIES -->
 <section class="container" id="properties">
 <h2 style="text-align:center">Our Properties</h2>
 <div class="cards" id="propertiesContainer"></div>
 </section>
 
-<!-- PROPERTY DETAIL (HIDDEN INITIALLY) -->
 <section class="container" id="propertyDetail">
 <h2 id="title"></h2>
+
 <div class="gallery" id="gallery"></div>
+
 <p id="desc"></p>
 <p><b id="price"></b></p>
+
+<h3>Location</h3>
+<iframe id="mapFrame" width="100%" height="300"></iframe>
 
 <h3>Book Now</h3>
 <form name="booking" method="POST" data-netlify="true">
@@ -101,38 +105,25 @@ footer { background:#111; color:white; text-align:center; padding:20px; }
 <input type="date" name="checkin" required>
 <input type="date" name="checkout" required>
 
-<select name="guests">
-<option>Guests</option>
-<option>1</option>
-<option>2</option>
-<option>3+</option>
-</select>
-
 <button class="btn">Book Now</button>
 </form>
-
 </section>
 
-<!-- CONTACT -->
 <section class="container" id="contact">
 <h2>Contact Us</h2>
-
 <form name="contact" method="POST" data-netlify="true">
 <input type="hidden" name="form-name" value="contact">
-
-<input type="text" name="name" placeholder="Name" required>
-<input type="email" name="email" placeholder="Email" required>
-<textarea name="message" placeholder="Message"></textarea>
-
+<input type="text" name="name" required>
+<input type="email" name="email" required>
+<textarea name="message"></textarea>
 <button class="btn">Send</button>
 </form>
 </section>
 
-<!-- ABOUT (NOW BELOW CONTACT) -->
 <section class="container" id="about">
-<h2 style="text-align:center">About Us</h2>
-<p style="max-width:800px; margin:auto; text-align:center;">
-At Dream Living Rentals, we provide premium apartments for short and long stays with modern amenities, prime locations, and affordable pricing.
+<h2>About Us</h2>
+<p style="max-width:800px;margin:auto;text-align:center;">
+We provide premium apartments with modern amenities and great locations.
 </p>
 </section>
 
@@ -143,7 +134,6 @@ At Dream Living Rentals, we provide premium apartments for short and long stays 
 <a class="whatsapp" href="https://wa.me/91XXXXXXXXXX">💬</a>
 
 <script>
-// Load properties
 fetch('/properties/properties.json')
   .then(res => res.json())
   .then(data => {
@@ -154,35 +144,35 @@ fetch('/properties/properties.json')
       card.className = 'card';
 
       card.innerHTML = `
-        <img src="${item.image}">
+        <img src="${item.images[0]}">
         <div class="card-content">
           <h3>${item.title}</h3>
           <p>${item.price}</p>
         </div>
       `;
 
-      card.onclick = () => showProperty(
-        item.title,
-        item.price,
-        item.description,
-        item.image
-      );
+      card.onclick = () => showProperty(item);
 
       container.appendChild(card);
     });
   });
 
-// Show property + reveal booking section
-function showProperty(title, price, desc, img){
- document.getElementById('title').innerText = title;
- document.getElementById('desc').innerText = desc;
- document.getElementById('price').innerText = price;
+function showProperty(item){
+ document.getElementById('title').innerText = item.title;
+ document.getElementById('desc').innerText = item.description;
+ document.getElementById('price').innerText = item.price;
 
- document.getElementById('gallery').innerHTML = `<img src="${img}">`;
+ // MULTIPLE IMAGES
+ let galleryHTML = '';
+ item.images.forEach(img => {
+   galleryHTML += `<img src="${img}">`;
+ });
+ document.getElementById('gallery').innerHTML = galleryHTML;
 
- // 🔥 SHOW SECTION
+ // MAP
+ document.getElementById('mapFrame').src = item.map;
+
  document.getElementById('propertyDetail').style.display = "block";
-
  document.getElementById('propertyDetail').scrollIntoView();
 }
 </script>
