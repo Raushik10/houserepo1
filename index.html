@@ -58,6 +58,32 @@ footer { background:#111; color:white; text-align:center; padding:20px; }
   position:fixed; bottom:20px; right:20px;
   background:#25D366; color:white;
   padding:15px; border-radius:50%;
+  text-decoration:none;
+}
+
+/* Popup */
+#popup {
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%, -50%);
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.3);
+text-align:center;
+z-index:1000;
+}
+#overlay {
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+z-index:999;
 }
 </style>
 </head>
@@ -94,10 +120,10 @@ footer { background:#111; color:white; text-align:center; padding:20px; }
 <p><b id="price"></b></p>
 
 <h3>Location</h3>
-<iframe id="mapFrame" width="100%" height="300"></iframe>
+<iframe id="mapFrame" width="100%" height="300" style="border:0;" loading="lazy"></iframe>
 
 <h3>Book Now</h3>
-<form name="booking" method="POST" data-netlify="true">
+<form name="booking" method="POST" data-netlify="true" onsubmit="handleSubmit(event)">
 <input type="hidden" name="form-name" value="booking">
 
 <input type="text" name="name" placeholder="Name" required>
@@ -105,18 +131,29 @@ footer { background:#111; color:white; text-align:center; padding:20px; }
 <input type="date" name="checkin" required>
 <input type="date" name="checkout" required>
 
-<button class="btn">Book Now</button>
+<select name="guests" required>
+<option value="">Select Guests</option>
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4+</option>
+</select>
+
+<button class="btn" type="submit">Book Now</button>
 </form>
+
 </section>
 
 <section class="container" id="contact">
 <h2>Contact Us</h2>
-<form name="contact" method="POST" data-netlify="true">
+<form name="contact" method="POST" data-netlify="true" onsubmit="handleSubmit(event)">
 <input type="hidden" name="form-name" value="contact">
-<input type="text" name="name" required>
-<input type="email" name="email" required>
-<textarea name="message"></textarea>
-<button class="btn">Send</button>
+
+<input type="text" name="name" placeholder="Name" required>
+<input type="email" name="email" placeholder="Email" required>
+<textarea name="message" placeholder="Message"></textarea>
+
+<button class="btn" type="submit">Send</button>
 </form>
 </section>
 
@@ -133,7 +170,16 @@ We provide premium apartments with modern amenities and great locations.
 
 <a class="whatsapp" href="https://wa.me/91XXXXXXXXXX">💬</a>
 
+<!-- Popup -->
+<div id="popup">
+<h3>✅ Request Submitted</h3>
+<p>Someone will contact you via mobile or email shortly.</p>
+<button onclick="closePopup()" class="btn">OK</button>
+</div>
+<div id="overlay"></div>
+
 <script>
+// Load properties
 fetch('/properties/properties.json')
   .then(res => res.json())
   .then(data => {
@@ -157,23 +203,57 @@ fetch('/properties/properties.json')
     });
   });
 
+// Show property
 function showProperty(item){
  document.getElementById('title').innerText = item.title;
  document.getElementById('desc').innerText = item.description;
  document.getElementById('price').innerText = item.price;
 
- // MULTIPLE IMAGES
  let galleryHTML = '';
  item.images.forEach(img => {
    galleryHTML += `<img src="${img}">`;
  });
  document.getElementById('gallery').innerHTML = galleryHTML;
 
- // MAP
  document.getElementById('mapFrame').src = item.map;
 
  document.getElementById('propertyDetail').style.display = "block";
  document.getElementById('propertyDetail').scrollIntoView();
+}
+
+// Form submit handler
+function encode(data) {
+  return Object.keys(data)
+    .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+    .join("&");
+}
+
+function handleSubmit(event) {
+  event.preventDefault();
+
+  const form = event.target;
+  const data = new FormData(form);
+
+  fetch("/", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: encode(Object.fromEntries(data))
+  })
+  .then(() => {
+    showPopup();
+    form.reset();
+  })
+  .catch(error => alert("Error: " + error));
+}
+
+function showPopup() {
+  document.getElementById("popup").style.display = "block";
+  document.getElementById("overlay").style.display = "block";
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+  document.getElementById("overlay").style.display = "none";
 }
 </script>
 
